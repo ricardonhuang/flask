@@ -5,7 +5,7 @@ Created on 2016��9��13��
 @author: huangning
 '''
 
-from flask import Flask,render_template
+from flask import Flask,render_template,session,url_for
 from flask import redirect
 from flask_bootstrap import Bootstrap
 from datetime import datetime
@@ -32,10 +32,10 @@ def index():
     #return redirect("http://www.hao123.com")
     #return render_template('index.html')
     if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
      
-    return render_template('index.html',form=form, name=name,current_time=datetime.utcnow())
+    return render_template('index.html',form=form, name=session.get('name'),current_time=datetime.utcnow())
 
 @app.errorhandler(404)
 def page_not_found(e):
